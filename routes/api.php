@@ -15,6 +15,8 @@ Route::group(["prefix" => "v1"], function () {
             Route::post('create', [OrderController::class, 'create']);
             Route::post('update/{order}', [OrderController::class,'update']);
             Route::post('confirm/{order}', [OrderController::class,'confirm']);
+            Route::post('cancel/{order}', [OrderController::class,'cancel']);
+            Route::post('delete/{order}', [OrderController::class,'destroy']);
         });
     });
 });

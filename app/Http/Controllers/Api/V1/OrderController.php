@@ -50,4 +50,28 @@ class OrderController extends Controller
             ->response()
             ->setStatusCode(200);
     }
+
+    /**
+     * cancel order
+     */
+    public function cancel(Order $order)
+    {
+        $order = $this->orderService->cancelOrder($order);
+
+        return (new OrderResource($order->load('items')))
+            ->response()
+            ->setStatusCode(200);
+    }
+
+    /**
+     * delete order
+     */
+    public function destroy(Order $order)
+    {
+        $this->orderService->deleteOrder($order);
+
+        return response()->json([
+            'message' => 'Order deleted successfully',
+        ], 200);
+    }
 }

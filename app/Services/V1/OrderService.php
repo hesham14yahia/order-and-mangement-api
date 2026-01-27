@@ -46,7 +46,27 @@ class OrderService
 
     public function confirmOrder(Order $order)
     {
+        if ($order->status !== OrderStatus::PENDING) {
+            throw new \Exception("Only pending orders can be confirmed.");
+        }
         $order->update(['status' => OrderStatus::CONFIRMED]);
         return $order;
+    }
+
+    public function cancelOrder(Order $order)
+    {
+        if ($order->status !== OrderStatus::CONFIRMED) {
+            throw new \Exception("Only confirmed orders can be cancelled.");
+        }
+        $order->update(['status' => OrderStatus::CANCELLED]);
+        return $order;
+    }
+
+    public function deleteOrder(Order $order)
+    {
+        if ($order->status !== OrderStatus::PENDING) {
+            throw new \Exception("Only pending orders can be deleted.");
+        }
+        $order->delete();
     }
 }
