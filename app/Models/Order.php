@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
@@ -10,6 +11,11 @@ class Order extends Model
         'status',
         'total_amount',
         'user_id',
+    ];
+
+    protected $casts = [
+        'total_amount' => 'decimal:2',
+        'status' => OrderStatus::class,
     ];
 
     public function user()
