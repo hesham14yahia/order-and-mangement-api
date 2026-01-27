@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\OrderController;
+use App\Http\Controllers\Api\V1\PaymentController;
 
 Route::group(["prefix" => "v1"], function () {
     Route::post('/register', [AuthController::class, 'register']);
@@ -19,6 +20,12 @@ Route::group(["prefix" => "v1"], function () {
             Route::post('confirm/{order}', [OrderController::class,'confirm']);
             Route::post('cancel/{order}', [OrderController::class,'cancel']);
             Route::post('delete/{order}', [OrderController::class,'destroy']);
+        });
+
+
+        Route::group(['prefix'=> 'payments'], function () {
+            Route::get('/', [PaymentController::class,'index']);
+            Route::post('charge/{order}', [PaymentController::class,'charge']);
         });
     });
 });
