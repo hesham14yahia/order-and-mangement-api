@@ -11,6 +11,9 @@ use App\Http\Requests\Api\V1\RegisterRequest;
 
 class AuthController extends Controller
 {
+    /**
+     * Register
+     */
     public function register(RegisterRequest $request)
     {
         $data = $request->validated();
@@ -25,6 +28,9 @@ class AuthController extends Controller
         ], 201);
     }
 
+    /**
+     * Login
+     */
     public function login(LoginRequest $request)
     {
         $data = $request->validated();
@@ -45,6 +51,9 @@ class AuthController extends Controller
         ], 200);
     }
 
+    /**
+     * Logout
+     */
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
