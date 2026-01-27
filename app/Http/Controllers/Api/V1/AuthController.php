@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Resources\V1\UserResource;
 use App\Http\Requests\Api\V1\LoginRequest;
 use App\Http\Requests\Api\V1\RegisterRequest;
 
@@ -22,10 +23,10 @@ class AuthController extends Controller
         $user = User::create($data);
         $token = $user->createToken('api_token')->plainTextToken;
 
-        return response()->json([
-            'user'  => $user,
-            'token' => $token,
-        ], 201);
+        return (new UserResource($user))
+            ->additional(['token' => $token])
+            ->response()
+            ->setStatusCode(201);
     }
 
     /**
@@ -45,10 +46,10 @@ class AuthController extends Controller
 
         $token = $user->createToken('api_token')->plainTextToken;
 
-        return response()->json([
-            'user'  => $user,
-            'token' => $token,
-        ], 200);
+        return (new UserResource($user))
+            ->additional(['token' => $token])
+            ->response()
+            ->setStatusCode(201);
     }
 
     /**
