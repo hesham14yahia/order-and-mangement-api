@@ -13,6 +13,7 @@ Route::group(["prefix" => "v1"], function () {
 
         Route::group(['prefix'=> 'orders'], function () {
             Route::post('create', [OrderController::class, 'create']);
+            Route::post('update/{order}', [OrderController::class,'update']);
         });
     });
 });

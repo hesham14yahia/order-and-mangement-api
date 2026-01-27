@@ -25,4 +25,22 @@ class OrderService
             return $order;
         });
     }
+
+    public function updateOrder(Order $order, array $data)
+    {
+        if (!key_exists("items", $data) || empty($data["items"])) {
+            throw new \Exception("Order must have at least one item.");
+        }
+        return DB::transaction(function () use ($order, $data) {
+            $order->update([
+                'status' => $data['status'] ?? $order->status,
+                'total_amount' => collect($data['items'])->sum(function ($item) {
+                    return $item['price'] * $item['quantity'];
+                }),
+            ]);
+            $order->items()->delete();
+            $order->items()->createMany($data['items']);
+            return $order;
+        });
+    }
 }
