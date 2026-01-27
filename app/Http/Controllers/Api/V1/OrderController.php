@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Requests\Api\V1\OrderFilterRequest;
 use App\Models\Order;
 use App\Services\V1\OrderService;
 use App\Http\Controllers\Controller;
@@ -13,6 +14,18 @@ class OrderController extends Controller
     public function __construct(protected OrderService $orderService)
     {
         //
+    }
+
+    /**
+     * list orders
+     */
+    public function index(OrderFilterRequest $request)
+    {
+        $orders = $this->orderService->getOrdersPaginated($request->validated());
+
+        return OrderResource::collection($orders->load('items'))
+            ->response()
+            ->setStatusCode(200);
     }
 
     /**

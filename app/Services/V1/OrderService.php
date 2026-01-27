@@ -8,6 +8,17 @@ use Illuminate\Support\Facades\DB;
 
 class OrderService
 {
+    public function getOrdersPaginated(array $filters = [])
+    {
+        $query = Order::query();
+
+        if (isset($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        return $query->paginate(10);
+    }
+
     public function createOrder(array $data)
     {
         if (!key_exists("items", $data) || empty($data["items"])) {
