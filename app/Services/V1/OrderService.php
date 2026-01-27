@@ -43,4 +43,10 @@ class OrderService
             return $order;
         });
     }
+
+    public function confirmOrder(Order $order)
+    {
+        $order->update(['status' => OrderStatus::CONFIRMED]);
+        return $order;
+    }
 }

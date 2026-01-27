@@ -38,4 +38,16 @@ class OrderController extends Controller
             ->response()
             ->setStatusCode(200);
     }
+
+    /**
+     * confirm order
+     */
+    public function confirm(Order $order)
+    {
+        $order = $this->orderService->confirmOrder($order);
+
+        return (new OrderResource($order->load('items')))
+            ->response()
+            ->setStatusCode(200);
+    }
 }
