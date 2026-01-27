@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Order;
+use App\Enums\PaymentMethod;
 use App\Services\V1\PaymentService;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\PaymentResource;
@@ -33,7 +34,8 @@ class PaymentController extends Controller
      */
     public function charge(PaymentRequest $request, Order $order)
     {
-        $payment = $this->paymentService->process($order, $request->validated()["payment_method"]);
+        $paymentMethod = PaymentMethod::tryFrom($request->validated()["payment_method"]);
+        $payment = $this->paymentService->process($order, $paymentMethod);
 
         return (new PaymentResource($payment->load("order", "order.items")))
             ->response()

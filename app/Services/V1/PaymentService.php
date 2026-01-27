@@ -5,8 +5,8 @@ namespace App\Services\V1;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Enums\OrderStatus;
+use App\Enums\PaymentMethod;
 use App\Enums\PaymentStatus;
-use App\Services\V1\Payment\PaymentGatewayFactory;
 
 class PaymentService
 {
@@ -21,14 +21,13 @@ class PaymentService
         return $query->paginate(10);
     }
 
-    public function process(Order $order, string $method)
+    public function process(Order $order, PaymentMethod $method)
     {
         if ($order->status !== OrderStatus::CONFIRMED) {
             throw new \Exception('Order must be confirmed');
         }
 
-        $gateway = PaymentGatewayFactory::make($method);
-        $result = $gateway->charge([
+        $result = $method->gateway()->charge([
             'amount' => $order->total_amount
         ]);
 
