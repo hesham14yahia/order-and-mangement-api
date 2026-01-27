@@ -29,6 +29,16 @@ class OrderController extends Controller
     }
 
     /**
+     * order details
+     */
+    public function details(Order $order)
+    {
+        return (new OrderResource($order->load('items')))
+            ->response()
+            ->setStatusCode(200);
+    }
+
+    /**
      * create order
      */
     public function create(OrderRequest $request)
