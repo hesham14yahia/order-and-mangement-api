@@ -12,7 +12,7 @@ Route::group(["prefix" => "v1"], function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
 
-        Route::group(['prefix'=> 'orders'], function () {
+        Route::group(['prefix' => 'orders'], function () {
             Route::get('/', [OrderController::class,'index']);
             Route::get('details/{order}', [OrderController::class,'details']);
             Route::post('create', [OrderController::class, 'create']);
@@ -23,7 +23,7 @@ Route::group(["prefix" => "v1"], function () {
         });
 
 
-        Route::group(['prefix'=> 'payments'], function () {
+        Route::group(['prefix' => 'payments'], function () {
             Route::get('/', [PaymentController::class,'index']);
             Route::post('charge/{order}', [PaymentController::class,'charge']);
         });

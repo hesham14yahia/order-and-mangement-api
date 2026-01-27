@@ -15,4 +15,3 @@ class PayPalGateway implements PaymentGatewayInterface
         ];
     }
 }
-
