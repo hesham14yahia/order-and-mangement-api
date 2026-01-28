@@ -25,6 +25,7 @@ Route::group(["prefix" => "v1"], function () {
 
         Route::group(['prefix' => 'payments'], function () {
             Route::get('/', [PaymentController::class,'index']);
+            Route::post('details/{order}', [PaymentController::class,'details']);
             Route::post('charge/{order}', [PaymentController::class,'charge']);
         });
     });

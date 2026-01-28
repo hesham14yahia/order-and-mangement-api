@@ -30,6 +30,20 @@ class PaymentController extends Controller
     }
 
     /**
+     * order payment details
+     */
+    public function details(Order $order)
+    {
+        $payment = $order->payment;
+        if (!$payment) {
+            return response()->json(['message' => 'No payment found for this order'], 404);
+        }
+        return (new PaymentResource($payment->load("order", "order.items")))
+            ->response()
+            ->setStatusCode(200);
+    }
+
+    /**
      * payment charge for an order
      */
     public function charge(PaymentRequest $request, Order $order)

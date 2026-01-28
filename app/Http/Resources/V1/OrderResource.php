@@ -21,6 +21,7 @@ class OrderResource extends JsonResource
             'total_amount' => $this->total_amount,
             'created_at' => $this->created_at->toDateTimeString(),
             'items' => OrderItemResource::collection($this->whenLoaded('items')),
+            'payment' => PaymentResource::make($this->whenLoaded('payment')),
         ];
     }
 }
