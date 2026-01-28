@@ -23,7 +23,7 @@ class OrderController extends Controller
     {
         $orders = $this->orderService->getOrdersPaginated($request->validated());
 
-        return OrderResource::collection($orders->load('items'))
+        return OrderResource::collection($orders->load('items', 'payment'))
             ->response()
             ->setStatusCode(200);
     }
@@ -33,7 +33,7 @@ class OrderController extends Controller
      */
     public function details(Order $order)
     {
-        return (new OrderResource($order->load('items')))
+        return (new OrderResource($order->load('items', 'payment')))
             ->response()
             ->setStatusCode(200);
     }
@@ -45,7 +45,7 @@ class OrderController extends Controller
     {
         $order = $this->orderService->createOrder($request->validated());
 
-        return (new OrderResource($order->load('items')))
+        return (new OrderResource($order->load('items', 'payment')))
             ->response()
             ->setStatusCode(201);
     }
@@ -57,7 +57,7 @@ class OrderController extends Controller
     {
         $order = $this->orderService->updateOrder($order, $request->validated());
 
-        return (new OrderResource($order->load('items')))
+        return (new OrderResource($order->load('items', 'payment')))
             ->response()
             ->setStatusCode(200);
     }
@@ -69,7 +69,7 @@ class OrderController extends Controller
     {
         $order = $this->orderService->confirmOrder($order);
 
-        return (new OrderResource($order->load('items')))
+        return (new OrderResource($order->load('items', 'payment')))
             ->response()
             ->setStatusCode(200);
     }
@@ -81,7 +81,7 @@ class OrderController extends Controller
     {
         $order = $this->orderService->cancelOrder($order);
 
-        return (new OrderResource($order->load('items')))
+        return (new OrderResource($order->load('items', 'payment')))
             ->response()
             ->setStatusCode(200);
     }
