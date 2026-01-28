@@ -24,7 +24,7 @@ class PaymentService
     public function process(Order $order, PaymentMethod $method)
     {
         if ($order->status !== OrderStatus::CONFIRMED) {
-            throw new \Exception('Order must be confirmed');
+            throw new \Exception('Only confirmed orders can be charged');
         }
 
         $result = $method->gateway()->charge([
