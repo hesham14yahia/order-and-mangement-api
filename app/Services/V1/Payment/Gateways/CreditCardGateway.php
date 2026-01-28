@@ -9,6 +9,8 @@ class CreditCardGateway implements PaymentGatewayInterface
 {
     public function charge(array $data): array
     {
+        $config = config("payments.gateways.credit_card");
+
         return [
             'status' => PaymentStatus::SUCCESSFUL,
             'reference' => 'CC-' . uniqid()

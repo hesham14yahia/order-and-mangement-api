@@ -9,6 +9,8 @@ class PayPalGateway implements PaymentGatewayInterface
 {
     public function charge(array $data): array
     {
+        $config = config("payments.gateways.paypal");
+
         return [
             'status' => PaymentStatus::SUCCESSFUL,
             'reference' => 'PP-' . uniqid()
