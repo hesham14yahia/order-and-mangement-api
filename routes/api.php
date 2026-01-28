@@ -13,14 +13,10 @@ Route::group(["prefix" => "v1"], function () {
         Route::post('/logout', [AuthController::class, 'logout']);
 
         Route::group(['prefix' => 'orders'], function () {
-            Route::get('/', [OrderController::class,'index']);
-            Route::get('details/{order}', [OrderController::class,'details']);
-            Route::post('create', [OrderController::class, 'create']);
-            Route::post('update/{order}', [OrderController::class,'update']);
             Route::post('confirm/{order}', [OrderController::class,'confirm']);
             Route::post('cancel/{order}', [OrderController::class,'cancel']);
-            Route::post('delete/{order}', [OrderController::class,'destroy']);
         });
+        Route::apiResource('orders', OrderController::class);
 
 
         Route::group(['prefix' => 'payments'], function () {

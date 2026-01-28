@@ -76,7 +76,7 @@ class OrderService
 
     public function deleteOrder(Order $order)
     {
-        if ($order->payments()->exists()) {
+        if ($order->payment) {
             throw new HttpException(422, "Cannot delete order with associated payments");
         }
         $order->delete();

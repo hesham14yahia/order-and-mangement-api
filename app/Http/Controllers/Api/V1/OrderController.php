@@ -31,7 +31,7 @@ class OrderController extends Controller
     /**
      * order details
      */
-    public function details(Order $order)
+    public function show(Order $order)
     {
         return (new OrderResource($order->load('items', 'payment')))
             ->response()
@@ -41,7 +41,7 @@ class OrderController extends Controller
     /**
      * create order
      */
-    public function create(OrderRequest $request)
+    public function store(OrderRequest $request)
     {
         $order = $this->orderService->createOrder($request->validated());
 
