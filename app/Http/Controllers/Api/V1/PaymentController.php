@@ -32,7 +32,7 @@ class PaymentController extends Controller
     /**
      * order payment details
      */
-    public function details(Order $order)
+    public function show(Order $order)
     {
         $payment = $order->payment;
         if (!$payment) {
