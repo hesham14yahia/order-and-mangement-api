@@ -58,3 +58,45 @@ Format code with Pint:
 ```bash
 ./vendor/bin/pint
 ```
+
+## Payment Gateway
+To add a new payment gateway "Stripe as Example"
+
+1. **Create the Gateway Class**
+
+Create a new file at `app/Services/V1/Payment/Gateways/StripeGateway.php` implement the `PaymentGatewayInterface`
+
+2. **Add the Payment Method Enum Case**
+
+Update `app/Enums/PaymentMethod.php`:
+
+```php
+enum PaymentMethod: string
+{
+    case CREDIT_CARD = 'credit_card';
+    case PAYPAL = 'paypal';
+    case STRIPE = 'stripe';  // Add new case
+
+    public function gateway()
+    {
+        return match ($this) {
+            self::CREDIT_CARD => new CreditCardGateway(),
+            self::PAYPAL => new PayPalGateway(),
+            self::STRIPE => new StripeGateway(),  // Add mapping
+        };
+    }
+}
+```
+
+3. **Update Configuration**
+
+Add your gateway credentials to `.env`:
+
+```
+STRIPE_API_KEY=sk_test_...
+STRIPE_SECRET_KEY=...
+```
+
+4. **Test the New Gateway**
+
+Create a test in `tests/Unit/` or `tests/Feature/`:
