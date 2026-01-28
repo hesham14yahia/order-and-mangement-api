@@ -27,6 +27,10 @@ class PaymentService
             throw new \Exception('Only confirmed orders can be charged');
         }
 
+        if ($order->payment) {
+            throw new \Exception('Order already has a payment');
+        }
+
         $result = $method->gateway()->charge([
             'amount' => $order->total_amount
         ]);

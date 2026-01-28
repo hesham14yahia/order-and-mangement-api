@@ -175,4 +175,28 @@ class PaymentTest extends TestCase
             $response->assertJsonPath('message', 'Only confirmed orders can be charged');
         }
     }
+
+    public function test_payment_operations_fail_if_order_already_has_payment(): void
+    {
+        $order = Order::factory()->for($this->user)->create([
+            'status' => OrderStatus::CONFIRMED,
+        ]);
+
+        // First payment
+        $this->postJson("/api/v1/payments/charge/{$order->id}", [
+            'payment_method' => PaymentMethod::CREDIT_CARD->value,
+        ], [
+            'Authorization' => "Bearer {$this->token}",
+        ]);
+
+        // Second payment attempt
+        $response = $this->postJson("/api/v1/payments/charge/{$order->id}", [
+            'payment_method' => PaymentMethod::CREDIT_CARD->value,
+        ], [
+            'Authorization' => "Bearer {$this->token}",
+        ]);
+
+        $response->assertStatus(500);
+            $response->assertJsonPath('message', 'Order already has a payment');
+    }
 }
