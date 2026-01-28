@@ -196,7 +196,7 @@ class PaymentTest extends TestCase
             'Authorization' => "Bearer {$this->token}",
         ]);
 
-        $response->assertStatus(500);
-            $response->assertJsonPath('message', 'Order already has a payment');
+        $response->assertStatus(422);
+        $response->assertJsonPath('message', 'Order already has a payment');
     }
 }

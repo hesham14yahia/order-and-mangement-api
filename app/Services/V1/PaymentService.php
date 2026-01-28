@@ -7,6 +7,7 @@ use App\Models\Payment;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentMethod;
 use App\Enums\PaymentStatus;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class PaymentService
 {
@@ -24,11 +25,11 @@ class PaymentService
     public function process(Order $order, PaymentMethod $method)
     {
         if ($order->status !== OrderStatus::CONFIRMED) {
-            throw new \Exception('Only confirmed orders can be charged');
+            throw new HttpException(422, 'Only confirmed orders can be charged');
         }
 
         if ($order->payment) {
-            throw new \Exception('Order already has a payment');
+            throw new HttpException(422, 'Order already has a payment');
         }
 
         $result = $method->gateway()->charge([
@@ -36,7 +37,7 @@ class PaymentService
         ]);
 
         if ($result['status'] !== PaymentStatus::SUCCESSFUL || empty($result['reference'])) {
-            throw new \Exception('Payment failed');
+            throw new HttpException(500, 'Payment failed');
         }
 
         return Payment::create([

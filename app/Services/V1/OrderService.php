@@ -5,6 +5,7 @@ namespace App\Services\V1;
 use App\Models\Order;
 use App\Enums\OrderStatus;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class OrderService
 {
@@ -22,7 +23,7 @@ class OrderService
     public function createOrder(array $data)
     {
         if (!key_exists("items", $data) || empty($data["items"])) {
-            throw new \Exception("Order must have at least one item");
+            throw new HttpException(422, "Order must have at least one item");
         }
         return DB::transaction(function () use ($data) {
             $order = Order::create([
@@ -40,7 +41,7 @@ class OrderService
     public function updateOrder(Order $order, array $data)
     {
         if (!key_exists("items", $data) || empty($data["items"])) {
-            throw new \Exception("Order must have at least one item");
+            throw new HttpException(422, "Order must have at least one item");
         }
         return DB::transaction(function () use ($order, $data) {
             $order->update([
@@ -58,7 +59,7 @@ class OrderService
     public function confirmOrder(Order $order)
     {
         if ($order->status !== OrderStatus::PENDING) {
-            throw new \Exception("Only pending orders can be confirmed");
+            throw new HttpException(422, "Only pending orders can be confirmed");
         }
         $order->update(['status' => OrderStatus::CONFIRMED]);
         return $order;
@@ -67,7 +68,7 @@ class OrderService
     public function cancelOrder(Order $order)
     {
         if ($order->status !== OrderStatus::CONFIRMED) {
-            throw new \Exception("Only confirmed orders can be cancelled");
+            throw new HttpException(422, "Only confirmed orders can be cancelled");
         }
         $order->update(['status' => OrderStatus::CANCELLED]);
         return $order;
@@ -76,7 +77,7 @@ class OrderService
     public function deleteOrder(Order $order)
     {
         if ($order->payments()->exists()) {
-            throw new \Exception("Cannot delete order with associated payments");
+            throw new HttpException(422, "Cannot delete order with associated payments");
         }
         $order->delete();
     }
