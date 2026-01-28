@@ -99,4 +99,4 @@ STRIPE_SECRET_KEY=...
 
 4. **Test the New Gateway**
 
-Create a test in `tests/Unit/` or `tests/Feature/`:
+Create a test in `tests/Unit/` or `tests/Feature/`
