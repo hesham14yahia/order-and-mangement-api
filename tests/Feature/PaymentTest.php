@@ -171,7 +171,7 @@ class PaymentTest extends TestCase
                 'Authorization' => "Bearer {$this->token}",
             ]);
 
-            $response->assertStatus(500);
+            $response->assertStatus(422);
             $response->assertJsonPath('message', 'Only confirmed orders can be charged');
         }
     }
